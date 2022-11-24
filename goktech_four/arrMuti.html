@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guilty_Test</title>
+  </head>
+  <body>
+    <script>
+      let arr = ["a", 10, [5, 8, 10], [["A", ["B", "C"], 100]], "H"];
+      let func = function (array, tabarr = 0) {
+        tabarr += 1;
+        for (let index = 0; index < array.length; index++) {
+          const element = array[index];
+          //缩进
+          let tab = (tabarr - 1) * 10;
+          for (let i = 0; i < tab; i++) {
+            document.write("&nbsp");
+          }
+          //判断是否是数组
+          if (typeof element !== "object") {
+            //不是数组就直接输出
+            document.write(`${index} => ${element} <br />`);
+          } else {
+            //是数组就缩进
+            document.write(`${index} => <br />`);
+            func(element, tabarr);
+          }
+        }
+      };
+      func(arr);
+    </script>
+  </body>
+</html>
