@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="text" id="inputText" /><br />
+    <span id="show"></span>
+  </body>
+  <script>
+    var inputText = document.getElementById("inputText");
+    var show = document.getElementById("show");
+    //输入框添加 input事件
+    inputText.addEventListener("input", function (e) {
+      defineObj.value = e.target.value;
+    });
+
+    let defineObj = {};
+    Object.defineProperty(defineObj, "value", {
+      configurable: true,
+      enumerable: true,
+      get: function () {
+        return val;
+      },
+      set: function (newVal) {
+        val = newVal;
+        //设置输入值跟随变化
+        inputText.value = val;
+        //设置显示值跟随变化
+        show.innerHTML = val;
+      },
+    });
+  </script>
+</html>
