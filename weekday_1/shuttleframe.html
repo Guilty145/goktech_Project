@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>穿梭框</title>
+    <style>
+      #first,
+      #second {
+        float: left;
+        width: 300px;
+        height: 500px;
+        background: #5da39d;
+        margin: 10px;
+      }
+      p {
+        text-align: center;
+      }
+      .changebgc {
+        background: #88bf88;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="first">
+      <p name="changeBGC">1</p>
+      <p name="changeBGC">2</p>
+      <p name="changeBGC">3</p>
+      <p name="changeBGC">4</p>
+      <p name="changeBGC">5</p>
+    </div>
+    <div id="second"></div>
+  </body>
+  <script>
+    // 单击时改变背景颜色
+    //捕获所有p元素
+    const clickOnce = document.getElementsByName("changeBGC");
+    //遍历所有p元素
+    clickOnce.forEach((once) => {
+      //为其设置一个点击事件，点击时改变背景颜色
+      once.onclick = function () {
+        //遗漏：单击时，上一次单击的效果还保留，未清除；
+        //每一次单击时，都清除该元素的所有样式
+        clickOnce.forEach((item) => {
+          item.className = "";
+        });
+        //toggle：切换、反选，在这里是指若点击时有背景颜色则取消，若没有则添加
+        this.classList.toggle("changebgc"); //存疑，不知道为什么都遍历了还要加classList : toggle是classList的属性，可以理解为固定用法
+      };
+      //双击时将该元素从左侧添加到右侧并删除左侧
+      let index = 0; //状态变量，0为默认左边，1为右边
+      once.ondblclick = function () {
+        if (index == 0) {
+          document.getElementById("second").append(once);
+          index = 1;
+        } else {
+          document.getElementById("first").append(once);
+          index = 0;
+        }
+      };
+    });
+  </script>
+</html>
