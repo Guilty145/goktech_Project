@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>购物车</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      table {
+        width: 90%;
+        margin: 20px auto;
+        border: 2px solid #000;
+        border-collapse: collapse;
+      }
+      tr,
+      th,
+      td {
+        height: 80px;
+        border: 2px solid #000;
+        text-align: center;
+      }
+      img {
+        display: inline-block;
+        vertical-align: middle;
+        height: 75px;
+      }
+      input {
+        border: none;
+        outline: none;
+        color: #333;
+        text-align: center;
+        background-color: transparent;
+      }
+    </style>
+  </head>
+  <body>
+    <table id="good_list">
+      <tr>
+        <th>
+          <input type="checkbox" id="checkAll" />
+        </th>
+        <th>名称</th>
+        <th>图片</th>
+        <th>单价</th>
+        <th>数量</th>
+        <th>小计</th>
+      </tr>
+    </table>
+    <script>
+      /*商品信息*/
+      let goodsInfo = [
+        {
+          gname: "A",
+          gimg: "https://pic.dmjnb.com/pic/49635ff8b54f529325d73ae10511bbb7?imageMogr2/thumbnail/x380/quality/90!",
+          gprice: 2400,
+          gnum: 1,
+        },
+        {
+          gname: "B",
+          gimg: "https://pic.dmjnb.com/pic/bcae0313c36ba0350a577c87aebc9478?imageMogr2/thumbnail/x380/quality/90!",
+          gprice: 4600,
+          gnum: 3,
+        },
+        {
+          gname: "C",
+          gimg: "https://pic.dmjnb.com/pic/ada915c23f479fc6e24a58af0ddc5f9d?imageMogr2/thumbnail/x380/quality/90!",
+          gprice: 10500,
+          gnum: 1,
+        },
+        {
+          gname: "D",
+          gimg: "https://pic.dmjnb.com/pic/1610ddf4dc7e10d978b7102e0126be60?imageMogr2/thumbnail/x380/quality/90!",
+          gprice: 1600,
+          gnum: 2,
+        },
+        {
+          gname: "E",
+          gimg: "https://pic.dmjnb.com/pic/aea799e947c95096b3ed084eb4330a2f?imageMogr2/thumbnail/x380/quality/90!",
+          gprice: 9460,
+          gnum: 1,
+        },
+      ];
+      /*遍历每一个商品信息，并将其解析显示到页面上*/
+      goodsInfo.forEach((once) => {
+        let goodshow = `
+        <tr>
+            <td>
+                <input type = "checkbox" name = "checkOne">
+            </td>
+            <td>
+                ${once.gname}
+            </td>
+            <td>
+                <img src="${once.gimg}" />
+            </td>
+            <td>
+                ${once.gprice}
+            </td>
+            <td>
+                <a class="sub">-</a>
+                    <input type = "test" value = "${once.gnum}">
+                <a class="add">+</a>
+            </td>
+            <td>
+                ${once.gnum * once.gprice}
+            </td>
+        </tr>
+        `;
+        document.getElementById("good_list").innerHTML += goodshow;
+      });
+      /*在遍历后的商品后加上总计*/
+      document.getElementById("good_list").innerHTML += `
+      <tr>
+        <td colspan="6">
+            总计：<span id="total_price">0</span>
+        </td>
+      </tr>
+      `;
+      /*实现点击+或-，数量加或减一*/
+      //捕获所有a元素，绑定一个点击事件，判断+或-
+      document.querySelectorAll("a").forEach((el) => {
+        el.onclick = function () {
+          if (el.classList.value == "add") {
+            let goodNum = Number(this.previousElementSibling.value);
+            this.previousElementSibling.value = goodNum + 1;
+          } else {
+            let goodNum = Number(this.nextElementSibling.value);
+            //若是当前数量已经是最小值1，则不进行-操作
+            if (goodNum <= 1) return;
+            this.nextElementSibling.value = goodNum - 1;
+          }
+          eachGoodsPrice(this.parentNode);
+          allGoodsPrice();
+        };
+      });
+      /*物品小计*/
+      //这里的参数传的是td
+      function eachGoodsPrice(el) {
+        let goods_price = el.previousElementSibling.textContent;
+        let goods_num = el.querySelector("input").value;
+        el.nextElementSibling.textContent = goods_price * goods_num;
+      }
+      /*选中*/
+      //获取全选框
+      let selectAll = document.getElementById("checkAll");
+      //获取所有单选框
+      let selectOnes = document.getElementsByName("checkOne");
+      //遍历所有的复选框，让他们的状态和全选框一致
+      selectAll.onclick = function () {
+        for (var i = 0; i < selectOnes.length; i++) {
+          // this.checked表示当前复选框选中状态，如果选中则返回true，否则为false
+          selectOnes[i].checked = this.checked;
+        }
+        allGoodsPrice();
+      };
+      //遍历所有的复选框，只要有一个复选框没有被选中，全选框就不勾选
+      for (var j = 0; j < selectOnes.length; j++) {
+        selectOnes[j].onclick = function () {
+          var flag = true;
+          for (var x = 0; x < selectOnes.length; x++) {
+            if (!selectOnes[x].checked) {
+              flag = false;
+            }
+          }
+          allGoodsPrice();
+          //每一个复选框都勾选，全选框勾选
+          selectAll.checked = flag;
+        };
+      }
+      /*物品总计*/
+      function allGoodsPrice() {
+        let totalSum = 0;
+        //获取所有选中的商品
+        document
+          .querySelectorAll("input[name='checkOne']:checked")
+          .forEach((item) => {
+            //获取单个商品的总价
+            let goodsOneprice = Number(
+              item.parentNode.parentNode.children[5].textContent
+            );
+            //总计等于每一个商品的和
+            totalSum += goodsOneprice;
+          });
+        //将总价的文本修改为选中商品的和
+        document.getElementById("total_price").textContent = totalSum;
+      }
+    </script>
+  </body>
+</html>
