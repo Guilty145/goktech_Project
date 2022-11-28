@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>实现键盘上下左右键让目标移动</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      #center {
+        position: relative;
+        width: 400px;
+        height: 600px;
+        margin: 30px auto;
+        border: 1px solid #000;
+      }
+      #box_1 {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+      }
+      img {
+        width: 20px;
+        height: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="center">
+      <div id="box_1"><img src="./images/飞机客机.png" alt="飞机客机" /></div>
+    </div>
+    <script>
+      const player = document.getElementById("box_1");
+      let left_flag = false,
+        right_flag = false,
+        up_flag = false,
+        down_flag = false;
+      //上38 下40 左37 右39 event.keyCode()
+      document.onkeydown = function (e) {
+        let keyCode = e.keyCode;
+        if (keyCode == 37) left_flag = true;
+        if (keyCode == 38) up_flag = true;
+        if (keyCode == 39) right_flag = true;
+        if (keyCode == 40) down_flag = true;
+        playerMove();
+      };
+      document.onkeyup = function (e) {
+        let keyCode = e.keyCode;
+        if (keyCode == 37) left_flag = false;
+        if (keyCode == 38) up_flag = false;
+        if (keyCode == 39) right_flag = false;
+        if (keyCode == 40) down_flag = false;
+      };
+      function playerMove() {
+        if (up_flag && player.offsetTop > 0) {
+          player.style.top = player.offsetTop - 20 + "px";
+        }
+        if (down_flag && player.offsetTop < 560) {
+          player.style.top = player.offsetTop + 20 + "px";
+        }
+        if (left_flag && player.offsetLeft > 0) {
+          player.style.left = player.offsetLeft - 20 + "px";
+        }
+        if (right_flag && player.offsetLeft < 380) {
+          player.style.left = player.offsetLeft + 20 + "px";
+        }
+      }
+    </script>
+  </body>
+</html>

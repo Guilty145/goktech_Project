@@ -1,0 +1,92 @@
+<!-- 实现下拉框 -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>下拉框</title>
+    <style>
+      body {
+        background: #f1f1f1;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      #top {
+        width: 160px;
+        height: 30px;
+        border: 1px solid #409eff;
+        border-radius: 5px;
+        padding-left: 15px;
+        font-size: 14px;
+        line-height: 30px;
+        color: #666;
+        margin: 150px auto 0px;
+        background: #fff;
+      }
+      #bottom {
+        width: 160px;
+        border-radius: 5px;
+        display: none;
+        background-color: #fff;
+        margin: 10px auto;
+        box-shadow: 1px 1px 1px #999;
+      }
+
+      li {
+        list-style: none;
+        height: 30px;
+        line-height: 30px;
+        font-size: 14px;
+        margin: 5px;
+        padding-left: 16px;
+      }
+      li:hover {
+        background: #f5f7fa;
+        /* margin: 5px; */
+      }
+    </style>
+  </head>
+  <body>
+    <div id="top">请选择</div>
+    <div id="bottom">
+      <ul id="getLi">
+        <li>黄金糕</li>
+        <li>双皮奶</li>
+        <li>蚵仔煎</li>
+        <li>龙须面</li>
+        <li>北京烤鸭</li>
+      </ul>
+    </div>
+    <script>
+      const clickTop = document.getElementById("top");
+      const showBottom = document.getElementById("bottom");
+      clickTop.onclick = function () {
+        showBottom.style.display = "block";
+      };
+      document.addEventListener(
+        "click",
+        function () {
+          showBottom.style.display = "none";
+        },
+        //捕获
+        true
+      );
+      for (
+        let i = 0;
+        i < document.getElementById("getLi").children.length;
+        i++
+      ) {
+        document
+          .getElementById("getLi")
+          .children[i].addEventListener("click", function () {
+            clickTop.innerText = this.innerText;
+            this.style.color = "#409eff";
+          });
+      }
+    </script>
+  </body>
+</html>

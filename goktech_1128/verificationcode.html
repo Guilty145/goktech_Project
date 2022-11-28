@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>验证码</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      #middle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 500px;
+        height: 200px;
+        background: #f1f1f1;
+        margin: 50px auto;
+      }
+      input {
+        /* border: none; */
+        color: #333;
+        width: 60px;
+        height: 80px;
+        text-align: center;
+        margin: 0 15px;
+        background-color: transparent;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="middle">
+      <input type="number" autofocus="autofocus" />
+      - <input type="number" /> - <input type="number" /> -
+      <input type="number" />
+    </div>
+    <script>
+      // 判断按下的是什么
+      let keyCode = 0;
+      document.onkeydown = function (e) {
+        keyCode = e.keyCode;
+      };
+      const allInput = document.querySelectorAll("input");
+      allInput.forEach((item, index) => {
+        item.addEventListener("keydown", function () {
+          if (index == allInput.length - 1) {
+            if (item.value.length == 1) {
+              item.blur();
+            }
+          } else if (item.value.length > 0) {
+            item.nextElementSibling.focus();
+          }
+        });
+      });
+      // allInput.forEach((item, index) => {
+      //   item.addEventListener("keydown", function () {
+      //     if ((keyCode = 8)) {
+      //       if (index > 0) {
+      //         // 删除，删除前一个input中的内容，并将光标前移
+      //         var deleteInput = document.getElementsByTagName("input")[--index];
+      //         deleteInput.removeEventListener("focus", function () {
+      //           this.blur();
+      //         });
+      //         deleteInput.value = "";
+      //         deleteInput.focus();
+      //       }
+      //     }
+      //   });
+      // });
+    </script>
+  </body>
+</html>
