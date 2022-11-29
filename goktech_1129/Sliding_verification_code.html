@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      .content {
+        margin: 0 auto;
+        position: relative;
+        width: 1000px;
+        height: 350px;
+        background: #999;
+      }
+      #box1 {
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        z-index: 1;
+        /* margin: 10px; */
+        background: #f1f1f1;
+      }
+      #box2 {
+        position: absolute;
+        left: 800px;
+        width: 200px;
+        height: 200px;
+        /* margin: 10px; */
+        background: #666;
+      }
+      .box {
+        position: relative;
+        top: 350px;
+        width: 1000px;
+        height: 200px;
+        background: #ccc;
+        display: block;
+        margin: 150px auto;
+      }
+      .btn {
+        background: #eee url(./images/进入箭头小.png) no-repeat;
+        background-position: center center;
+        position: absolute;
+        top: 0;
+        width: 200px;
+        height: 200px;
+        z-index: 3;
+        line-height: 40px;
+      }
+      .text {
+        position: absolute;
+        width: 100%;
+        margin: 0;
+        top: 40%;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        z-index: 2;
+        font-size: 24px;
+        /* background-color: #fff; */
+      }
+      .bg {
+        position: absolute;
+        height: 100%;
+        background-color: #7ac23c;
+        z-index: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="content">
+      <div id="box1"></div>
+      <div id="box2"></div>
+      <div class="box">
+        <div class="btn"></div>
+        <p class="text">请向右移动滑块完成验证</p>
+        <div class="bg"></div>
+      </div>
+    </div>
+
+    <script>
+      /*捕获第一个块块*/
+      const box1 = document.querySelector("#box1"),
+        btn = document.querySelector(".btn"), //按钮
+        box = document.querySelector(".box"), //盒子
+        text = document.querySelector(".text"), //文字
+        bg = document.querySelector(".bg"); //背景
+      var flag = false; //默认状态
+      //绑定一个鼠标点击事件
+      btn.onmousedown = function (event) {
+        var e = event || window.event;
+        var downX = e.clientX; //按下时与X轴的点
+        //获取点击时的时间戳
+        let startTime = Date.now();
+        // console.log(startTime);
+        //绑定一个鼠标移动事件
+        btn.onmousemove = function (event) {
+          var moveX = event.clientX - downX; //移入的距离-按下的距离
+          //移动范围
+          if (moveX > 0) {
+            document.querySelector("#box1").style.left = moveX + "px";
+            this.style.left = moveX + "px";
+            bg.style.width = moveX + "px";
+
+            //验证成功
+            if (moveX >= box.offsetWidth - this.offsetWidth) {
+              // console.log(box.offsetWidth - this.offsetWidth); //800
+              flag = true;
+              //获取松开的时间戳
+              let endTime = Date.now();
+              // console.log(endTime);
+              //完成验证的时长
+              let Time =
+                Math.round(((endTime - startTime) / 1000) * Math.pow(10, 2)) /
+                Math.pow(10, 2);
+              text.innerText = "验证成功 ! " + "用时：" + Time + "s";
+              text.style.color = "#fff";
+              btn.onmousemove = null; //清除事件
+              btn.onmousedown = null; //清除事件
+            }
+          }
+        };
+      };
+      //松开
+      btn.onmouseup = function () {
+        btn.onmousemove = null; //清除事件
+        //判断条件
+        if (flag) return;
+        document.querySelector("#box1").style.left = 0;
+        this.style.left = 0;
+        bg.style.width = 0;
+      };
+    </script>
+  </body>
+</html>
