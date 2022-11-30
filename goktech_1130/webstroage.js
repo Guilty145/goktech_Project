@@ -1,5 +1,5 @@
 export default class {
-  //增、改
+  //增
   setValue(key, val, outoftime = 1) {
     localStorage.setItem(
       key,
@@ -33,6 +33,11 @@ export default class {
     if (!storageValue) return "The storage value does not exist.";
     //若存在则删除
     localStorage.removeItem(key);
+    return true;
+  }
+  //修改，不需要修改有效期
+  modifyValue(key, val) {
+    localStorage.setItem(key, JSON.stringify(val));
     return true;
   }
 }
