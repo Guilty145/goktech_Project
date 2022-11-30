@@ -10,7 +10,8 @@ export default class {
       })
     );
     return true;
-  } //查
+  }
+  //查
   getValue(key) {
     let storageValue = localStorage.getItem(key);
     //如果数据不存在则返回空
@@ -21,16 +22,17 @@ export default class {
     //读取localStorage的时候去判断数据是否过期，如果过期则无法获取数据，并删除数据
     if (!storageValueObj.outime || Date.now() > storageValue) {
       localStorage.removeItem(key);
-      return "storage value is expire.";
+      return "storage value has expired.";
     }
     return storageValueObj.val;
   }
   //删除
   removeValue(key) {
     let storageValue = localStorage.getItem(key);
-    //若不存在则直接返回空
-    if (!storageValue) return null;
+    //若不存在则提示用户数据不存在
+    if (!storageValue) return "The storage value does not exist.";
     //若存在则删除
     localStorage.removeItem(key);
+    return true;
   }
 }
