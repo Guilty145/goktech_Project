@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .middle {
+        width: 1020px;
+        height: 200px;
+        line-height: 200px;
+        text-align: center;
+        margin: 100px auto;
+        background: #f1f1f1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="middle">您好，您是第<span id="counter"></span>位访客！</div>
+    <script>
+      let counter = Number(localStorage.getItem("user_online"));
+      if (!sessionStorage.getItem("user_online")) {
+        counter++;
+        localStorage.setItem("user_online", counter);
+        sessionStorage.setItem("user_online", Date.now());
+      }
+      document.getElementById("counter").textContent = counter;
+    </script>
+  </body>
+</html>
